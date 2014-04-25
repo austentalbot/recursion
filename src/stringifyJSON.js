@@ -20,7 +20,7 @@ var stringifyJSON = function(obj) {
   	strung='"';
   	strung+=obj;
   	strung+='"'
-  } else if (typeof obj === 'number' | typeof obj === 'boolean') { //NUMBER AND BOOLEAN
+  } else if (typeof obj === 'number' | typeof obj === 'boolean' | obj === null) { //NUMBER AND BOOLEAN AND NULL
   	strung+=obj;
   } else if (typeof obj === 'object') { //OBJECT
   	strung='{'
