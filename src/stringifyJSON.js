@@ -14,8 +14,10 @@ var stringifyJSON = function(obj) {
   	strung='[';
   	for (i=0; i<obj.length; i++) {
   		strung+=stringifyJSON(obj[i]);
-  		i<obj.length-1 ? strung+=', ' : strung+=']';
+  		i<obj.length-1 ? strung+=',' : strung+=']';
   	}
+  	// case for empty array
+  	obj.length===0 ? strung+=']' : null;
   } else if (typeof obj === 'string') { //STRING
   	strung='"';
   	strung+=obj;
@@ -26,11 +28,16 @@ var stringifyJSON = function(obj) {
   	strung='{'
   	for (i in obj) {
   		strung+=stringifyJSON(i);
-  		strung+=': '
+  		strung+=':'
   		strung+=stringifyJSON(obj[i]);
-  		strung+=', ';
+  		strung+=',';
   	}
-  	strung=strung.slice(0, strung.length-2)+'}'
+  	strung=strung.slice(0, strung.length-1)+'}'
+  	// handle empty object
+  	if (!Object.getOwnPropertyNames(obj).length) {
+  		strung='{}';
+  	}
+
   }
 
   return strung;
