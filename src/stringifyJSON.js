@@ -26,9 +26,15 @@ var stringifyJSON = function(obj) {
   	strung+='"'
   }
 
-  //NUMBER
+  //NUMBER AND BOOLEAN
+  if (typeof obj === 'number' | typeof obj === 'boolean') {
+  	strung+=obj;
+  }
 
   //OBJECT
+  if (typeof obj === 'object') {
+  	
+  }
 
   return strung;
 
