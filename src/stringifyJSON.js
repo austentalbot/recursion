@@ -10,30 +10,27 @@ var stringifyJSON = function(obj) {
   var strung='';
   var i;
 
-  //ARRAY
-  if (Array.isArray(obj)) {
+  if (Array.isArray(obj)) { //ARRAY
   	strung='[';
   	for (i=0; i<obj.length; i++) {
   		strung+=stringifyJSON(obj[i]);
   		i<obj.length-1 ? strung+=', ' : strung+=']';
   	}
-  };
-
-  //STRING
-  if (typeof obj === 'string') {
+  } else if (typeof obj === 'string') { //STRING
   	strung='"';
   	strung+=obj;
   	strung+='"'
-  }
-
-  //NUMBER AND BOOLEAN
-  if (typeof obj === 'number' | typeof obj === 'boolean') {
+  } else if (typeof obj === 'number' | typeof obj === 'boolean') { //NUMBER AND BOOLEAN
   	strung+=obj;
-  }
-
-  //OBJECT
-  if (typeof obj === 'object') {
-  	
+  } else if (typeof obj === 'object') { //OBJECT
+  	strung='{'
+  	for (i in obj) {
+  		strung+=stringifyJSON(i);
+  		strung+=': '
+  		strung+=stringifyJSON(obj[i]);
+  		strung+=', ';
+  	}
+  	strung=strung.slice(0, strung.length-2)+'}'
   }
 
   return strung;
