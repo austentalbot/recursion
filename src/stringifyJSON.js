@@ -27,10 +27,14 @@ var stringifyJSON = function(obj) {
   } else if (typeof obj === 'object') { //OBJECT
   	strung='{'
   	for (i in obj) {
-  		strung+=stringifyJSON(i);
-  		strung+=':'
-  		strung+=stringifyJSON(obj[i]);
-  		strung+=',';
+  		//HANDLE FUNCTIONS AND UNDEFINED
+  		if (typeof obj[i]!== 'function' & typeof obj[i]!== 'undefined') {  		strung+=stringifyJSON(i);
+	  		strung+=':'
+	  		strung+=stringifyJSON(obj[i]);
+	  		strung+=',';
+  		} else { //functions and undefined should return '{}'
+  			strung='{ ';
+  		}
   	}
   	strung=strung.slice(0, strung.length-1)+'}'
   	// handle empty object
@@ -38,7 +42,7 @@ var stringifyJSON = function(obj) {
   		strung='{}';
   	}
 
-  }
+  } 
 
   return strung;
 
