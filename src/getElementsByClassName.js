@@ -5,5 +5,25 @@
 
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className){
-  // your code here
+  //loop over all nodes at one level
+  //test to see if class name in node
+  //recursively loop over all child nodes
+
+  var elements=[];
+  var root=document.body;
+  var i;
+
+// create function to be recursively called on children
+getElements=function(level) {
+	children=level.childNodes;
+	for (i=0; i<childNodes.length; i++) {
+		if (className in childNodes[i].classList) {
+			elements.push(childNodes[i]);
+		}
+		getElements(childNodes[i]);
+	}
+};
+
+return elements;
+
 };
