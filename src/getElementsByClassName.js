@@ -13,17 +13,20 @@ var getElementsByClassName = function(className){
   var root=document.body;
   var i;
 
-// create function to be recursively called on children
-getElements=function(level) {
-	children=level.childNodes;
-	for (i=0; i<childNodes.length; i++) {
-		if (className in childNodes[i].classList) {
-			elements.push(childNodes[i]);
+  // create function to be recursively called on children
+  var getElements=function(level) {
+  	if (level.hasChildNodes) {
+  	  children=level.childNodes;
+	  for (i=0; i<children.length; i++) {
+		if (children[i].classList & children[i].classList.contains(className)) {
+		  elements.push(children[i]);
 		}
-		getElements(childNodes[i]);
+		getElements(children[i]);
+	  }
 	}
-};
+  };
 
-return elements;
+  getElements(root);
+  return elements;
 
 };
