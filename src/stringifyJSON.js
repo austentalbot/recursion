@@ -5,45 +5,59 @@
 var stringifyJSON = function(obj) {
   // recursively call stringifyJSON to pull each element out
   // handle different types (obj, array, string, number) separately first, then call stringifyJSON recursively
+  var str = "";
 
-  // populate empty variables
-  var strung='';
+  if (typeof(obj) === "object" && obj !== null) {
+    // Handle Arrays, Strings, Numbers, Objects, null, undefined & function,
+    if (Array.isArray(obj)) {
+      if (obj.length !== 0) {
+        str = "[";
+        _.each(obj, function(value, index) {
+          str +=  stringifyJSON(value) + ",";
+        });
+        str = str.slice(0,str.length - 1) + "]";
+      }
+      else {
+        str='[]';
+      }
+    }
+    else if (typeof(obj) === "object") {
+      if (Object.keys(obj).length > 0) {
+        str += "{";
+        _.each(obj, function(value, index) {
+          var test = stringifyJSON(value);
+          if (test !== "") {
+            str += '"' +index + '"' +':';
+            str += test + ",";
+          }
+        });
+        str = str.slice(0, str.length - 1) + "}";
+        if (str === "}") {
+          str = "{}";
+        }
+      }
+      else {
+        str = "{}";
+      }
 
-  if (Array.isArray(obj)) { //ARRAY
-  	strung='[';
-    _.each(obj, function(val, ind) {
-  		strung+=stringifyJSON(val);
-  		ind<obj.length-1 ? strung+=',' : strung+=']';
-  	});
-  	// case for empty array
-  	obj.length===0 ? strung+=']' : null;
-  } else if (typeof obj === 'string') { //STRING
-  	strung='"';
-  	strung+=obj;
-  	strung+='"';
-  } else if (typeof obj === 'number' | typeof obj === 'boolean' | obj === null) { //NUMBER AND BOOLEAN AND NULL
-  	strung+=obj;
-  } else if (typeof obj === 'object') { //OBJECT
-  	strung='{';
-    _.each(obj, function(val, ind) {
-  		//HANDLE FUNCTIONS AND UNDEFINED
-  		if (typeof val!== 'function' & typeof val!== 'undefined') {  		
-        strung+=stringifyJSON(ind);
-	  		strung+=':';
-	  		strung+=stringifyJSON(val);
-	  		strung+=',';
-  		} else { //functions and undefined should return '{}'
-  			strung='{ ';
-  		}
-  	});
-  	strung=strung.slice(0, strung.length-1)+'}';
-  	// handle empty object
-  	if (!Object.getOwnPropertyNames(obj).length) {
-  		strung='{}';
-  	}
+    }
+    else {
+      str = "";
+    }
+  }
+  else if (typeof(obj) === "number" || typeof(obj) === "boolean") {
+    console.log(obj, str);
+    str += obj;
+  }
+  else if (typeof(obj) === "string") {
+    str += '"' + obj + '"';
+  }
+  else if (obj === null) {
+    str += "null";
+  }
 
-  } 
-
-  return strung;
-
+  return str;
 };
+
+
+// var obj = {"hello": [1,2,3,4,5,6]}
