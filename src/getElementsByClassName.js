@@ -10,28 +10,29 @@ var getElementsByClassName = function(className){
   //test to see if class name in node
   //recursively loop over all child nodes
 
-  var elements=[];
+  var results=[];
 
-  //create function to be recursively called on children
-	var getElements = function (level) {
-		//check if class in level
-    if (level.classList) {
-      if (level.classList.contains(className)) {
-        elements.push(level);
-      }
+  var node= arguments[1] || document.body;
+
+  var hasClass = function(node , className) {
+    if (node.classList && node.classList.contains(className)) {
+      return true;
     }
-    //recurse over children
-    if (level.hasChildNodes) {
-      for (var i =0; i < level.childNodes.length; i++) {
-        getElements(level.childNodes[i]);
-      }
-    }
-	};
+    return false;
+  };
 
-	// call getElements function to start recursion
-	getElements(document.body);
+  //check if node has class
+  if (hasClass(node, className)) {
+    //  if so add to results
+    results.push(node);
+  }
+  //iterate through children
+  for (var i=0; i<node.childNodes.length; i++) {
+  //  call recursively and join results of recursive function to results
+    results = results.concat(getElementsByClassName(className, node.childNodes[i]));
+  }
 
-	return elements;
 
+  return results;
 };
 
